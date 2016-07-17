@@ -1,13 +1,12 @@
 # JMWebImageView
 
-`UIImageView` subclass set up from a `NSURL`
+`UIImageView` subclass set up from a `NSURL`, asynchronously downloading the image and displaying it
 
-## Main characteristics
+## Optimizations
 
- - Asynchronous image downloading
  - Image automatic resizing: if the image is too big a smaller version will be generated, cached and used / the original size image will also be cached and will be used to generate other sizes if necessary
  - Great image decoding performances thanks to ImageIO
- - Memory and file cache implemeted using respectively NSCache and NSFileManager (in an asynchronous thread)
+ - Memory and file cache implemented using respectively NSCache and NSFileManager (in an asynchronous thread)
 
 ## Setup
 
