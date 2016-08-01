@@ -63,13 +63,13 @@ private final class WebImageDownloader {
     }
     
     func unregister(key: String) {
-        for (size, completions) in completionsBySize {
-            for currentKey in completions.keys {
+        for (size, completions) in completionsBySize.reverse() {
+            for currentKey in completions.keys.reverse() {
                 if key == currentKey {
-                    // completions is passed by copy so we need to use its reference
+                    // completions is passed by copy so we need to directly use its reference
                     completionsBySize[size]?[key] = nil
                     
-                    if completions.isEmpty {
+                    if completionsBySize[size]?.isEmpty == true {
                         completionsBySize[size] = nil
                     }
                 }
@@ -82,7 +82,8 @@ private final class WebImageDownloader {
     }
     
     func download(session: NSURLSession) {
-//        NetworkActivityIndicatorManager.sharedManager.increment()
+        // We should think of a way to display the status bar network activity indicator
+        // UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         
         let request = NSURLRequest(URL: url)
         
@@ -99,7 +100,7 @@ private final class WebImageDownloader {
                 completions.forEach({ $0.1(error: error, image: image, progress: nil) })
             }
             
-//            NetworkActivityIndicatorManager.sharedManager.decrement()
+            // UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         }
     }
     
@@ -213,6 +214,10 @@ final class WebImageDownloaderManager: NSObject {
                 imageDownloaders[url.absoluteString] = nil
             }
         }
+    }
+    
+    func isDownloading(url: NSURL) -> Bool {
+        return imageDownloaders[url.absoluteString] != nil
     }
 }
 

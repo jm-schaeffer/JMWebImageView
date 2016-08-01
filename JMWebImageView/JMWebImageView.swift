@@ -32,11 +32,7 @@ class JMWebImageView: UIImageView {
     
     var url: NSURL? {
         didSet {
-            if url == oldValue {
-                return
-            }
-            
-            if let oldValue = oldValue {
+            if let oldValue = oldValue where oldValue != url {
                 WebImageDownloaderManager.sharedManager.cancel(oldValue, key: hashString)
             }
             
@@ -121,6 +117,9 @@ class JMWebImageView: UIImageView {
         case .Complete:
             removeLoadingView()
             self.image = image ?? placeholderImage
+            if image == nil { // When the image couldn't be loaded we need to reset the url
+                url = nil
+            }
         }
     }
     
